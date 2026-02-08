@@ -2,33 +2,67 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Will You Be My Valentine? 💘</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Will You Be My Valentine?</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <!-- Question display -->
-    <h1 id="question">Will you be my Valentine?</h1>
-    
-    <!-- Wheel container -->
-    <div class="wheel-container">
-      <div class="pointer"></div>
-      <canvas id="wheel" width="300" height="300"></canvas>
+  <div class="app-container">
+    <!-- Progress dots -->
+    <div class="progress-bar">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
     </div>
-    
-    <!-- Spin button -->
-    <button id="spinBtn">Spin the Wheel! 🎰</button>
-    
-    <!-- Result message -->
-    <p id="result"></p>
+
+    <!-- Main card -->
+    <div class="card">
+      <div class="emoji-header">💝</div>
+      <h1 id="question" class="question-text">Will you be my Valentine?</h1>
+      <p class="subtitle">Spin to reveal your destiny...</p>
+      
+      <!-- Wheel container -->
+      <div class="wheel-wrapper">
+        <div class="pointer">
+          <svg width="24" height="32" viewBox="0 0 24 32" fill="none">
+            <path d="M12 0L24 32H0L12 0Z" fill="#FF375F"/>
+            <path d="M12 4L20 28H4L12 4Z" fill="white"/>
+          </svg>
+        </div>
+        <canvas id="wheel" width="280" height="280"></canvas>
+        <div class="wheel-center">✨</div>
+      </div>
+
+      <!-- Result badge -->
+      <div id="result" class="result-badge hidden">
+        <span class="result-text"></span>
+      </div>
+    </div>
+
+    <!-- Action button -->
+    <button id="spinBtn" class="primary-button">
+      <span class="btn-text">Spin the Wheel</span>
+      <span class="btn-icon">🎯</span>
+    </button>
   </div>
 
-  <!-- Final reveal screen (hidden initially) -->
+  <!-- Finale overlay -->
   <div id="finale" class="finale hidden">
-    <h1>Okay fine, the wheel was rigged... 😏</h1>
-    <p>But my feelings for you aren't.</p>
-    <h2>Happy Valentine's Day! 💕</h2>
+    <div class="finale-content">
+      <div class="heart-animation">💖</div>
+      <h1>You found the<br>hidden truth</h1>
+      <div class="reveal-card">
+        <p class="reveal-text">The wheel never lies!1!</p>
+      </div>
+      <div class="final-cta">
+        <span class="big-emoji">💕</span>
+        <h2>Happy Valentine's Day</h2>
+      </div>
+    </div>
+    <div class="floating-hearts">
+      <span>💝</span><span>💖</span><span>💗</span><span>💓</span><span>💕</span>
+    </div>
   </div>
 
   <script src="script.js"></script>
