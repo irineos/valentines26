@@ -214,7 +214,11 @@ function spinWheel() {
 // Handle spin completion
 function onSpinComplete() {
   const round = rounds[currentRound];
-  document.getElementById('result').textContent = round.options[round.winIndex];
+  const resultBadge = document.getElementById('resultBadge');
+  const resultText = document.getElementById('result');
+  
+  resultText.textContent = round.options[round.winIndex];
+  resultBadge.classList.remove('hidden');
   
   currentRound++;
   
@@ -222,7 +226,8 @@ function onSpinComplete() {
     // Next round after delay
     setTimeout(() => {
       document.getElementById('question').textContent = rounds[currentRound].question;
-      document.getElementById('result').textContent = '';
+      resultBadge.classList.add('hidden');
+      resultText.textContent = '';
       document.getElementById('spinBtn').disabled = false;
       
       // Redraw wheel with new options
