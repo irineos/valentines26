@@ -57,6 +57,13 @@ const questions = [
   "Final answer?"
 ];
 
+// Analytics - track events to GoatCounter
+function trackEvent(name) {
+  if (window.goatcounter && window.goatcounter.count) {
+    window.goatcounter.count({ path: name, event: true });
+  }
+}
+
 // Build a round by picking random bad answers + one winning answer
 function buildRound(questionIndex) {
   const numBadOptions = 5;
@@ -153,6 +160,9 @@ function drawWheel(options) {
 function spinWheel() {
   if (isSpinning) return;
   
+  // Track spin event
+  trackEvent(`spin-round-${currentRound + 1}`);
+  
   const round = rounds[currentRound];
   isSpinning = true;
   document.getElementById('spinBtn').disabled = true;
@@ -239,6 +249,7 @@ function onSpinComplete() {
   } else {
     // Show finale
     setTimeout(() => {
+      trackEvent('reached-finale');
       document.getElementById('finale').classList.remove('hidden');
     }, 1500);
   }
