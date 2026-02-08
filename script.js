@@ -1,24 +1,96 @@
-// Game configuration
-const rounds = [
-  {
-    question: "Will you be my Valentine?",
-    options: ["No", "Nope", "Never", "In your dreams", "Ask my cat", "Yes! 💕"],
-    winIndex: 5
-  },
-  {
-    question: "Are you sure?",
-    options: ["Changed my mind", "Let me think...", "Buffering...", "Error 404", "Maybe not", "100% Yes! 💖"],
-    winIndex: 5
-  },
-  {
-    question: "Final answer?",
-    options: ["Just kidding", "Actually no", "New phone who dis", "I need to wash my hair", "Nah", "Yes forever! 💘"],
-    winIndex: 5
-  }
+// Answer pools - add more here!
+const badAnswers = [
+  "No",
+  "Nope",
+  "Never",
+  "In your dreams",
+  "Ask my cat",
+  "Changed my mind",
+  "Let me think...",
+  "Buffering...",
+  "Error 404",
+  "Maybe not",
+  "Just kidding",
+  "Actually no",
+  "New phone\nwho dis",
+  "I need to wash\nmy hair",
+  "Nah",
+  "Ask my lawyer",
+  "Have you tried\nturning it off\nand on again?",
+  "404 feelings\nnot found",
+  "I'll pass",
+  "Absolutely not",
+  "Not today",
+  "Maybe next year",
+  "System error",
+  "Connection lost",
+  "Brain.exe\nhas stopped",
+  "Lemme\ncheck my calendar",
+  "Per my\nlast email... no",
+  "I have plans\nwith my couch",
+  "Mercury is\nin retrograde",
+  "Haha no",
+  "Read receipts: off",
+  "Seen ✓✓",
+  "Unsubscribe",
+  "K",
+  "lol no",
+  "Hard pass",
+  "That's gonna\nbe a no"
 ];
 
+const winningAnswers = [
+  "Yes! 💕",
+  "100% Yes! 💖",
+  "Yes forever! 💘",
+  "Obviously yes! 💝",
+  "Yes yes yes! 💗",
+  "Always yes! 💞",
+  "Absolutely! 💓",
+  "Of course! 🥰"
+];
+
+// Questions for each round
+const questions = [
+  "Will you be my Valentine?",
+  "Are you sure?",
+  "Final answer?"
+];
+
+// Build a round by picking random bad answers + one winning answer
+function buildRound(questionIndex) {
+  const numBadOptions = 5;
+  
+  // Shuffle and pick bad answers
+  const shuffledBad = [...badAnswers].sort(() => Math.random() - 0.5);
+  const selectedBad = shuffledBad.slice(0, numBadOptions);
+  
+  // Pick a winning answer for this round
+  const winAnswer = winningAnswers[questionIndex % winningAnswers.length];
+  
+  // Random position for winning answer
+  const winIndex = Math.floor(Math.random() * (numBadOptions + 1));
+  
+  // Build options array
+  const options = [...selectedBad];
+  options.splice(winIndex, 0, winAnswer);
+  
+  return {
+    question: questions[questionIndex],
+    options: options,
+    winIndex: winIndex
+  };
+}
+
+// Game state
 let currentRound = 0;
+let rounds = [];
 let isSpinning = false;
+
+// Initialize rounds
+function initRounds() {
+  rounds = questions.map((_, i) => buildRound(i));
+}
 
 // Canvas setup
 const canvas = document.getElementById('wheel');
@@ -51,14 +123,22 @@ function drawWheel(options) {
     ctx.lineWidth = 2;
     ctx.stroke();
     
-    // Draw text
+    // Draw text (supports multi-line with \n)
     ctx.save();
     ctx.translate(centerX, centerY);
     ctx.rotate(startAngle + sliceAngle / 2);
     ctx.textAlign = 'right';
     ctx.fillStyle = 'white';
-    ctx.font = 'bold 12px Arial';
-    ctx.fillText(option, radius - 10, 4);
+    ctx.font = 'bold 11px Arial';
+    
+    const lines = option.split('\n');
+    const lineHeight = 12;
+    const totalHeight = (lines.length - 1) * lineHeight;
+    const startY = -totalHeight / 2;
+    
+    lines.forEach((line, idx) => {
+      ctx.fillText(line, radius - 10, startY + idx * lineHeight + 4);
+    });
     ctx.restore();
   });
   
@@ -162,5 +242,6 @@ function onSpinComplete() {
 // Event listeners
 document.getElementById('spinBtn').addEventListener('click', spinWheel);
 
-// Initial draw
+// Initialize game
+initRounds();
 drawWheel(rounds[0].options);
